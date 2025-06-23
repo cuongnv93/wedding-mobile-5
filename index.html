@@ -69,6 +69,7 @@
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Maven+Pro:wght@400;700&family=Judson:wght@400;700&family=Mulish:wght@400;700&family=Tinos:wght@400;700&family=Philosopher:wght@400;700&family=Dancing+Script:wght@400;700&family=Yeseva+One&family=Trirong:wght@400;700&family=Roboto:wght@400;700&family=Roboto+Slab:wght@400;700&family=Noto+Serif:wght@400;700&family=Cormorant+Upright:wght@400;700&family=Quicksand:wght@400;700&display=swap"
         as="style" onload="this.onload = null; this.rel = 'stylesheet';" />
     <link rel="preload" href="https://w.ladicdn.com/v5/source/ladipagev3.min.js?v=1748227078198" as="script" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style id="style_ladi" type="text/css">
         a,
         abbr,
@@ -4668,6 +4669,34 @@
             }
         }
     </style>
+    <style>
+        /* Custom Toastify Styles */
+        .toast-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .toast-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .toast-text {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 16px;
+        }
+
+        .toast-message {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+    </style>
     <div class="overlay" id="overlay">
         <div class="container" id="doorContainer">
             <div class="door left-door"></div>
@@ -4685,19 +4714,19 @@
     </script>
 
     <script>
-        document.addEventListener("keydown", function (e) {
-            // F12
-            if (e.key === "F12" || e.keyCode === 123) {
-                e.preventDefault();
-                return false;
-            }
+        // document.addEventListener("keydown", function (e) {
+        //     // F12
+        //     if (e.key === "F12" || e.keyCode === 123) {
+        //         e.preventDefault();
+        //         return false;
+        //     }
 
-            // Ctrl+Shift+I or Ctrl+Shift+J or Ctrl+U or Ctrl+S
-            if ((e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) || (e.ctrlKey && (e.key === "U" || e.key === "S"))) {
-                e.preventDefault();
-                return false;
-            }
-        });
+        //     // Ctrl+Shift+I or Ctrl+Shift+J or Ctrl+U or Ctrl+S
+        //     if ((e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) || (e.ctrlKey && (e.key === "U" || e.key === "S"))) {
+        //         e.preventDefault();
+        //         return false;
+        //     }
+        // });
     </script>
 
     <script>
@@ -4835,16 +4864,6 @@
                 </div>
                 <div id="PARAGRAPH66" class="ladi-element">
                     <div class="ladi-paragraph">27 . 04 . 2025</div>
-                </div>
-                <div id="GROUP26" class="ladi-element">
-                    <div class="ladi-group">
-                        <div id="BOX13" class="ladi-element">
-                            <div class="ladi-box ladi-transition"></div>
-                        </div>
-                        <div id="HEADLINE61" class="ladi-element">
-                            <h3 class="ladi-headline">Thiệp Cưới Online - Love Card<br /></h3>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -5324,7 +5343,7 @@
                                         mình</div>
                                 </div>
                                 <div id="FORM9" data-config-id="67f77854a39c1d0011103571" class="ladi-element">
-                                    <form autocomplete="off" method="post" class="ladi-form">
+                                    <form id="form-thiep-moi" autocomplete="off" method="post" class="ladi-form">
                                         <div id="BUTTON9" class="ladi-element">
                                             <div class="ladi-button">
                                                 <div class="ladi-button-background"></div>
@@ -5356,7 +5375,7 @@
                                                     <select tabindex="3" name="form_item6"
                                                         class="ladi-form-control ladi-form-control-select"
                                                         data-selected="">
-                                                        <option value="">Bạn Cô Dâu</option>
+                                                        <option value="Bạn Cô Dâu">Bạn Cô Dâu</option>
                                                         <option value="Bạn Chú Rể">Bạn Chú Rể</option>
                                                         <option value="Bạn Cô Dâu &#38; Chú Rể">Bạn Cô Dâu &#38; Chú Rể
                                                         </option>
@@ -5368,7 +5387,7 @@
                                             <div class="ladi-form-item-container">
                                                 <div class="ladi-form-item-background"></div>
                                                 <div class="ladi-form-item">
-                                                    <select tabindex="4" name=""
+                                                    <select tabindex="4" name="form_item7"
                                                         class="ladi-form-control ladi-form-control-select"
                                                         data-selected="">
                                                         <option value="">Xác nhận tham dự</option>
@@ -6307,6 +6326,129 @@
             };
             run();
         })();
+    </script>
+    <script>
+        const GOOGLE_SCRIPT_URL_THAM_DU = "https://script.google.com/macros/s/AKfycbw2mm-HYCa2l2UW66DJ4KSBIpg75fVD_5MkJ7sURq7Xl0eBihFG6PWNm-pD4x0didQE/exec"
+        document.querySelector('#form-thiep-moi').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const form = e.target; // Lấy form để reset sau này
+
+            const data = {
+                name: "'" + form.name.value,
+                form_item6: "'" + form.form_item6.value,
+                form_item7: "'" + form.form_item7.value,
+                message: "'" + form.message.value,
+            };
+
+            fetch(GOOGLE_SCRIPT_URL_THAM_DU, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(res => res.json()) // Nếu Apps Script trả về JSON
+                .then(res => { })
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+
+        const sheetID = '16mNzHuCAOrSGlInsiHpXpYf7LRia6kFztkBfELHGIZ4';
+        const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+
+        let messages = []; // Chuyển sang `let`
+
+        // Cấu hình
+        const config = {
+            displayDuration: 3500,
+            intervalTime: 5000
+        };
+
+        let autoInterval;
+
+        // Tạo toast notification
+        function createToast(messageData) {
+            const toastContent = `
+        <div class="toast-content">
+            <div class="toast-icon">
+                <img src="https://w.ladicdn.com/source/notify.svg?v=1.0" alt="Icon" />
+            </div>
+            <div class="toast-text">
+                <div class="toast-title">${messageData['Tên']}</div>
+                <div class="toast-message">${messageData['Lời nhắn']}</div>
+                <div class="toast-message">${messageData['Quan hệ']}</div>
+            </div>
+        </div>
+    `;
+
+            Toastify({
+                text: toastContent,
+                duration: config.displayDuration,
+                gravity: "top",
+                position: "center",
+                stopOnFocus: true,
+                style: {
+                    background: 'white',
+                    color: "#333",
+                    borderRadius: "12px",
+                    padding: "20px",
+                    minWidth: "350px",
+                    maxWidth: "400px",
+                    width: '80%',
+                    boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
+                    fontSize: "14px"
+                },
+                escapeMarkup: false
+            }).showToast();
+        }
+
+        // Hiển thị toast ngẫu nhiên
+        function showRandomToast() {
+            if (!messages.length) return;
+            const randomIndex = Math.floor(Math.random() * messages.length);
+            const messageData = messages[randomIndex];
+            createToast(messageData);
+        }
+
+        // Bắt đầu auto show
+        function startAutoShow() {
+            showRandomToast();
+            autoInterval = setInterval(showRandomToast, config.intervalTime);
+            console.log('🚀 Auto notification đã bắt đầu');
+        }
+
+        // Load dữ liệu từ Google Sheets
+        async function fetchMessages() {
+            try {
+                const res = await fetch(url);
+                const data = await res.text();
+                const json = JSON.parse(data.substring(47).slice(0, -2));
+                const rows = json.table.rows.map(row => row.c.map(cell => cell?.v || ""));
+                const headers = rows[0];
+
+                messages = rows.slice(1).map(row => {
+                    let obj = {};
+                    headers.forEach((key, i) => {
+                        obj[key] = row[i];
+                    });
+                    return obj;
+                });
+
+                console.log("📥 Fetched messages:", messages);
+                startAutoShow(); // ✅ Chỉ gọi khi đã có dữ liệu
+
+            } catch (err) {
+                console.error("❌ Lỗi khi lấy dữ liệu:", err);
+            }
+        }
+
+        // Khởi tạo khi load trang
+        window.addEventListener('load', () => {
+            console.log('🎉 Trang đã load xong');
+            fetchMessages(); // Gọi hàm load dữ liệu
+        });
+
     </script>
 </body>
 
